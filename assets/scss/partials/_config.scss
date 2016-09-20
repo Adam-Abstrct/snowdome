@@ -1,0 +1,41 @@
+//**
+// Project Settings
+//**
+
+// Project Responsive Breakpoints
+
+$mobile-break: 480px;
+$tablet-break: 720px;
+$desktop-break: 960px;
+$large-desktop-break: 1170px;
+
+// Project Color Variables
+
+// White
+$snow-white: #ffffff;
+$snow-white--darken: darken($snow-white, 8%);
+
+// Black
+$snow-black: #494949;
+$snow-black--darken: darken($snow-black, 6%);
+
+//grey 
+//
+
+$snow-grey: #f9f9f9;
+
+// Blue
+
+$snow-light-blue: #00afeb;
+$snow-dark-blue: #004a8d;
+
+
+// Font Weights
+
+$weight-normal: 400;
+$weight-bold: 700;
+$weight-black: 800;
+
+// Project Font Variables
+
+$futura : "futura-pt",sans-serif;

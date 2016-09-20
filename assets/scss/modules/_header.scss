@@ -1,0 +1,35 @@
+header {
+	background: url('../imgs/header.png')  no-repeat center;
+	background-size: cover;
+	height: 120px;
+}
+
+.logo__snowdome {
+
+	img {
+		height: 175px;
+	}
+}
+
+.logo__lightsource {
+	text-align: right;
+	margin-top: 2rem;
+	float:right;
+
+}
+
+.green {
+	color: $snow-white--darken;
+	font-size: 20px;
+	font-weight: 300;
+	padding: .5rem;
+	position:relative;
+	top:32px;
+
+
+
+	#green {
+		font-weight: 500;
+		text-decoration: underline;
+	}
+}

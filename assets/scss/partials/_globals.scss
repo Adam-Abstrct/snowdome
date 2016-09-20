@@ -1,0 +1,69 @@
+//**
+// Global Class Selectors
+//**
+
+// Project Responsive Breakpoints
+
+.background--inline {
+  display: inline;
+}
+
+.background--block {
+  display: block;
+}
+
+.float--left {
+  float: left;
+}
+
+.float--right {
+  float: right;
+}
+
+.font--bold {
+  font-weight: $weight-bold;
+}
+
+.font--black {
+  font-weight: $weight-black;
+}
+
+.background--white {
+  background: $snow-white;
+}
+
+.background--whiter {
+  background: $snow-white--darken;
+}
+
+.text--white {
+  color: $snow-white;
+}
+
+.background--black {
+  background: $snow-black;
+}
+
+.background--blacker {
+  background: $snow-black--darken;
+}
+
+.text--black {
+  color: $snow-black;
+}
+
+
+
+.height--full {
+  height:100%
+}
+
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}

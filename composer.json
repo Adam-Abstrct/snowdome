@@ -1,0 +1,29 @@
+{
+    "name": "snowdome",
+    "description": "-",
+    "authors": [
+        {
+            "name": "Adam Johnson",
+            "email": "adam.johnson@impression.co.uk"
+        }
+    ],
+
+    "require": {
+
+    },
+    "autoload" : {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:tecnickcom/tc-lib-pdf.git"
+        },
+        {
+            "type": "composer",
+            "url": "https://www.setasign.com/downloads/"
+        }
+    ]
+}

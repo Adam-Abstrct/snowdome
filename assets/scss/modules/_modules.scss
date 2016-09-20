@@ -1,0 +1,40 @@
+
+.module {
+	background-color: $snow-grey;
+	padding: 1rem;
+	margin-top: 1.5rem;
+
+	.module__header {
+		color: $snow-dark-blue;
+		font-size: 18px;
+		text-align: center;
+		font-weight: $weight-bold;
+		margin: .5rem;
+
+
+	}
+
+	.module__image{
+		height: 75px;
+		margin-right: .5rem;
+		float: right;
+		
+	}
+
+	.module__content{
+		color: $snow-dark-blue;
+		font-weight: $weight-bold;
+	}
+
+	.module__info {
+		font-size: 24px;
+		display: inline-block;
+
+		p {
+			padding: {
+				top: 1.3rem;
+			}
+		}
+	}
+
+}
