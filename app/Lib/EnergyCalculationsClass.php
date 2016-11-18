@@ -17,12 +17,14 @@ class EnergyCalculations
 	public $generation;	
 	public $consumption;
 	public $datePeriod;
+	public $noWeeks;
 	
-	function __construct($info , $period , $dates )
+	function __construct($info , $period , $dates , $weeks )
 	{
 		$this->results = $info->data->records;
 		$this->datePeriod = $period;
 		$this->dates = $dates;
+		$this->noWeeks = $weeks;
 
 	}
 
@@ -35,14 +37,13 @@ class EnergyCalculations
 	{
 
 		$this->returnGeneration();
-
-		$chart = $this->calculateChartInfo();
-		$c02 = $this->calculateC02Saved();
-		$trees = $this->calculateTreesPlanted();
+		$this->calculateC02Saved();
+		$cars = $this->calculatecars();
 		$houses = $this->calculateHousesPowered();
 		$green = $this->calculateGreenEnergy();
+		$chart = $this->calculateChartInfo();
 
-		return json_encode(['chart' => $chart , 'C02' => $c02 , 'trees' => $trees , 'houses' => $houses , 'green' => $green , 'df' => $this->dates['dateFrom'] , 'dt' => $this->dates['dateTo'] ]);
+		return json_encode(['chart' => $chart , 'C02' => $this->co2Saved , 'cars' => $cars , 'houses' => $houses , 'green' => $green , 'df' => $this->dates['dateFrom'] , 'dt' => $this->dates['displayTo'] ]);
 
 	}
 
@@ -59,10 +60,6 @@ class EnergyCalculations
 				$this->generation = $value;
 			}
 
-			if($value->name == 'Consumption (kWh)')
-			{
-				$this->consumption = $value;
-			}
 		}
 
 	}
@@ -77,7 +74,7 @@ class EnergyCalculations
 	public function calculateC02Saved()
 	{
 		$C02 = $this->generation->total;
-		return $saved = round($C02 * 0.542 / 1000 , 3) ;
+		$this->co2Saved = round(($C02 * 0.517 / 1000) / ($this->noWeeks/52) , 0) ;
 	}
 
 	/**
@@ -88,12 +85,10 @@ class EnergyCalculations
 	 * 
 	 * @return [type] [description]
 	 */
-	public function calculateTreesPlanted()
+	public function calculateCars()
 	{
-		$total = $this->generation->total * 0.542;
-		$trees = round($total / 22.5) ;
-
-		return $trees;
+		$cars = $this->co2Saved / 4.5;
+		return number_format($cars, 0);
 
 	}
 
@@ -106,12 +101,8 @@ class EnergyCalculations
 	 */
 	public function calculateHousesPowered()
 	{
-		$total = $this->generation->total;
-		$calculate = 2500/12;
-		$houses = $total / $calculate;
-
+		$houses = $this->co2Saved / 3.1;
 		return round($houses);
-
 	}
 
 	/**
@@ -132,9 +123,11 @@ class EnergyCalculations
         $legend = [];
         $formattedDates = [];
 
-        foreach ($this->datePeriod as $dates) {
-            $legend[] = $dates->format('M-d');
-            $formattedDates[] = $dates->format("U");
+        foreach ($this->datePeriod as $key => $dates) {
+           	if($key%7 == 0) {
+    			$legend[] = $dates->format('d-M');
+        	}
+            $formattedDates[] =  (int) $dates->format("U");
         }   
 
         $selectedDates = [];
@@ -145,20 +138,20 @@ class EnergyCalculations
         	}	
         }
 
-        $selectedDates = [];
-        foreach ($this->consumption->readings as $value) {
-        	if(in_array($value->timestamp, $formattedDates))
-        	{
-        		if($value->value !== null) {
-        			$consumptionValues[] = round($value->value,2);
-        		} else {
-        			$consumptionValues[] = 0;
-        		}	
-        	}	
-        }
+        $newArray = [];
+        $key = 0;
+        $weeklyValue = 0;
+        for ($i=0; $i < count($selectedValues) ; $i++) { 
+        	$weeklyValue += $selectedValues[$i];
 
-   
-        return ['generated' => $selectedValues , 'consumption' => $consumptionValues , 'legend' => $legend ];
+        	if($i%7 == 0 && $i !== 0) {
+    			$newArray[$key] = $weeklyValue;
+    			$weeklyValue = 0;
+    			$key++;
+        	}
+        }
+        
+        return ['generated' => $newArray , 'legend' => $legend ];
 
 	}
 
@@ -169,8 +162,9 @@ class EnergyCalculations
 	public function calculateGreenEnergy() 
 	{
 		$total = $this->generation->total;
+		$estimate = $total * (52/$this->noWeeks) / 1000;
 
-		return round($total / 1000 , 2);
+		return round($estimate, 2);
 
 	}
 

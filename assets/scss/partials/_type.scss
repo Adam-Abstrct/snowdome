@@ -47,6 +47,10 @@ p {
   text-transform: capitalize;
 }
 
+.weight--thin {
+  font-weight: $weight-thin;
+}  
+
 .weight--normal {
   font-weight: $weight-normal;
 }

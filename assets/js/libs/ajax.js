@@ -1,3 +1,5 @@
+
+
 $(function(){
 
 	var jsonResponse;
@@ -5,7 +7,7 @@ $(function(){
     var dt;
 
 	$.ajax({
-		url: "../../app/Src/AjaxResponse.php",
+		url: "app/Src/AjaxResponse.php",
 		type: "POST",
 		success: function(data) {
 
@@ -14,30 +16,37 @@ $(function(){
             df = jsonResponse.df;
             dt = jsonResponse.dt;
 			
-			outputChartData(jsonResponse.chart);
-			outputC02Data(jsonResponse.C02);
-			outputTreeData(jsonResponse.trees);
-			outputHousesData(jsonResponse.houses);
-			outputGreenData(jsonResponse.green);
+			
 
 		},
 		error: function(data) {
 
 		},
 		complete: function() {
- 		
+ 		    outputChartData(jsonResponse.chart);
+            outputC02Data(jsonResponse.C02);
+            outputCarData(jsonResponse.cars);
+            outputHousesData(jsonResponse.houses);
+            outputGreenData(jsonResponse.green);
 		} 
 	});
 
 
 	function outputChartData(data)
 	{
+       var cH = sizeGraph();
+       var test = $('.chart__main');
+       test.css('min-height' , cH+'px')
+
 		$('.chart__main').highcharts({
 		chart: {
-			backgroundColor: '#f9f9f9'
+			backgroundColor: '#f9f9f9',
+            style:{
+             'height' :  cH+'px'   
+            }
 		},	
         title: {
-            text: 'Energy Output - 28.06.16 > 05.07.16',
+            text: 'Weekly Solar Generation',
             useHTML: true,
             style: {
             	'background-color': '#00afeb',
@@ -53,13 +62,13 @@ $(function(){
         },
         yAxis: [{ // Primary yAxis
             labels: {
-                format: '{value} KWh',
+                format: '{value} kWh',
                 style: {
                     color: '#00afeb'
                 }
             },
             title: {
-                text: 'Generation',
+                text: null,
                 align: 'high',
         		offset: 0,
         		rotation: 0,
@@ -69,25 +78,6 @@ $(function(){
 
                 }
             }
-        }, { // Secondary yAxis
-            title: {
-                text: 'Consumption',
-                align: 'high',
-        		offset: 0,
-        		rotation: 0,
-        		y: -10,
-                style: {
-                    color: '#004a8d'
-
-                }
-            },
-            labels: {
-                format: '{value} KWh',
-                style: {
-                    color: '#004a8d'
-                }
-            },
-            opposite: true
         }],
         tooltip: {
             valueSuffix: 'KWh'
@@ -101,16 +91,7 @@ $(function(){
             yAxis: 0,
             data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
             tooltip: {
-                valueSuffix: ' KWh'
-            }
-
-        }, {
-            name: 'Consumption',
-            type: 'spline',
-            data: [45.1, 65.9, 45.5, 51.5, 47.2, 144.5, 75.2, 122.5, 100.3, 80.3, 44.9, 44.6],
-            yAxis: 1,
-            tooltip: {
-                valueSuffix: ' KWh'
+                valueSuffix: ' kWh'
             }
         }]
         });
@@ -125,15 +106,10 @@ $(function(){
             temp.push(generated[i]);
         }
     
-        for (var i = 0; i < consumption.length ; i++) { //loops 6 times
-            temp2.push(consumption[i]);
-        }
 
-        chart.series[0].setData(temp);
-        chart.series[1].setData(temp2);
+        chart.series[0].setData(temp);        
         chart.xAxis[0].update({categories: data.legend });
-        chart.setTitle({text: 'Energy Output- '+ df + ' > '+ dt})
-
+    
 
 	}
 	
@@ -142,20 +118,20 @@ $(function(){
 	{
 	
 		var $c02 = $('#cO2 p');
-		$c02.html(data+' C\'s');
+		$c02.html(data+' <span style="font-size:14px;" class="weight--normal"> tonnes per year </span>');
 
 	}
 
-	function outputTreeData(data)
+	function outputCarData(data)
 	{
-		var $tree = $('#trees p');
-		$tree.html(data);
+		var $cars = $('#cars p');
+		$cars.html(data+' <span style="font-size:14px;" class="weight--normal"> per year</span>');
 	}
 
 	function outputHousesData(data)
 	{
 		var $houses = $('#houses p');
-		$houses.html(data);
+		$houses.html(data+' <span style="font-size:14px;" class="weight--normal"> per year</span>');
 	}
 
 	function outputGreenData(data)

@@ -6,19 +6,46 @@
 
 	.module__header {
 		color: $snow-dark-blue;
-		font-size: 18px;
+		font-size: 14px;
 		text-align: center;
 		font-weight: $weight-bold;
-		margin: .5rem;
+		margin: .5rem 0;
+		height: 30px;
 
+		@media screen and (min-width: 1300px) {
+			height: 38px;
+			font-size: 16px; 
+		}
+		@media screen and (min-width: 1450px) {
+			height: auto;
+			font-size: 18px; 
+		}
 
+	}
+
+	.module__icon-wrap {
+		text-align: center;
+		margin: 0;
+
+		@media screen and (min-width: 1300px) {
+			float: left;
+			width: 45%;
+
+		}
 	}
 
 	.module__image{
 		height: 75px;
-		margin-right: .5rem;
-		float: right;
-		
+	}
+
+	.module__icon {
+		margin: .5rem;
+		line-height: 75px;
+		i {
+			font-size: 50px; 
+			color: #00afeb;
+		}
+
 	}
 
 	.module__content{
@@ -28,13 +55,43 @@
 
 	.module__info {
 		font-size: 24px;
-		display: inline-block;
+		display: block;
+		text-align: center;
+   		margin-top: -20px;
+
+
+		@media screen and (min-width: 1300px) {
+			float: left;
+			width: 54%;
+    		margin-top: 0px;
+
+		}
 
 		p {
 			padding: {
-				top: 1.3rem;
+				top: 1.5rem;
 			}
+
+			@media screen and (min-width: 1300px) {
+				line-height: 2rem;
+			}
+
+			span {
+				display: block;
+				text-align: center;
+			}
+		}
+
+		&#connection {
+			@media screen and (min-width: 1300px) {
+				font-size: 18px;
+			} 
 		}
 	}
 
+	:after {
+			content:"";
+		    display:block;
+		    clear:both;
+		}
 }
