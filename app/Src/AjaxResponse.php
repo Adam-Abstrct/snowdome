@@ -31,8 +31,6 @@ try {
 	print_r($e->getMessage());
 }
 
-
-	
 //Calculates Needed info from the response array given	
 $calculate = new EnergyCalculations($response , $period , $dates , $noWeeks);
 $ajaxResponse = $calculate->returnAllCalculations();

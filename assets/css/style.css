@@ -179,6 +179,15 @@ ul ul, ol ul, ul ol, ol ol {
   @media (min-width: 1180px) {
     .container {
       width: 1170px; } }
+  @media (min-width: 1210px) {
+    .container {
+      width: 1200px; } }
+  @media (min-width: 1410px) {
+    .container {
+      width: 1400px; } }
+  @media (min-width: 1610px) {
+    .container {
+      width: 1600px; } }
 
 .container-fluid {
   margin-right: auto;
@@ -1019,13 +1028,16 @@ header {
   background-size: cover;
   height: 120px; }
 
-.logo__snowdome img {
-  height: 175px; }
+.logo__snowdome {
+  float: left; }
+  .logo__snowdome img {
+    height: 175px; }
 
 .logo__lightsource {
   text-align: right;
   margin-top: 2rem;
-  float: right; }
+  float: right;
+  margin-right: 1rem; }
 
 .green {
   color: #ebebeb;
@@ -1033,15 +1045,36 @@ header {
   font-weight: 300;
   padding: .5rem;
   position: relative;
-  top: 32px; }
+  top: 32px;
+  display: inline-block;
+  float: right; }
   .green #green {
     font-weight: 500;
     text-decoration: underline; }
 
+/** 
+ * Aaron's edits -- is this close to BEM? ;) 
+ */
+.module__wrap {
+  position: relative;
+  min-height: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  float: left;
+  width: 50%;
+  margin-top: 10px; }
+  @media screen and (min-width: 720px) {
+    .module__wrap {
+      float: left;
+      width: 33.33333%; } }
+  @media screen and (min-width: 960px) {
+    .module__wrap {
+      float: left;
+      width: 16.66667%; } }
+
 .module {
   background-color: #f9f9f9;
-  padding: 1rem;
-  margin-top: 1.5rem; }
+  padding: 1rem; }
   .module .module__header {
     color: #004a8d;
     font-size: 14px;
@@ -1080,20 +1113,28 @@ header {
     display: block;
     text-align: center;
     margin-top: -20px; }
-    @media screen and (min-width: 1300px) {
+    @media screen and (min-width: 1200px) {
       .module .module__info {
         float: left;
         width: 54%;
-        margin-top: 0px; } }
+        margin-top: 0px;
+        font-size: 26px; } }
+    @media screen and (min-width: 1400px) {
+      .module .module__info {
+        font-size: 32px; } }
     .module .module__info p {
       padding-top: 1.5rem; }
-      @media screen and (min-width: 1300px) {
+      @media screen and (min-width: 1400px) {
         .module .module__info p {
           line-height: 2rem; } }
+      @media screen and (min-width: 1600px) {
+        .module .module__info p {
+          line-height: 2.5rem; } }
       .module .module__info p span {
         display: block;
-        text-align: center; }
-    @media screen and (min-width: 1300px) {
+        text-align: center;
+        margin-top: 5px; }
+    @media screen and (min-width: 1400px) {
       .module .module__info#connection {
         font-size: 18px; } }
   .module :after {
@@ -1101,62 +1142,58 @@ header {
     display: block;
     clear: both; }
 
-.footer__cont {
+footer {
   background-color: #f9f9f9;
-  min-height: 50px;
-  height: auto;
-  margin-top: 1.5rem; }
+  margin-top: 10px;
+  min-height: 80px;
+  margin-bottom: 10px;
+  float: left;
+  width: 100%;
+  position: relative; }
 
-.tips .tips__title {
-  color: #004a8d;
-  font-weight: 700;
+.tips {
+  float: left;
+  width: 98%;
   padding-top: 1.5rem;
-  padding-left: .5rem;
   padding-bottom: .5rem;
-  float: left;
-  width: 35%; }
-  @media screen and (min-width: 1350px) {
-    .tips .tips__title {
-      width: 28%; } }
-  @media screen and (min-width: 1600px) {
-    .tips .tips__title {
-      width: 23%; } }
-  @media screen and (min-width: 1800px) {
-    .tips .tips__title {
-      width: 19%; } }
-.tips .tips__icon {
-  color: #00afeb; }
-.tips .tips__container {
-  position: relative;
-  float: left;
-  width: 65%; }
-  @media screen and (min-width: 1350px) {
-    .tips .tips__container {
-      width: 72%; } }
-  @media screen and (min-width: 1600px) {
-    .tips .tips__container {
-      width: 77%; } }
-  @media screen and (min-width: 1800px) {
-    .tips .tips__container {
-      width: 81%; } }
-  .tips .tips__container p {
-    display: none;
-    padding-top: 1.7rem;
-    padding-left: .5rem;
-    padding-bottom: .5rem;
-    font-size: 18px;
-    position: absolute;
-    color: #004a8d; }
+  padding-left: 2%; }
+  @media screen and (min-width: 960px) {
+    .tips {
+      padding-right: 340px; } }
+  .tips .tips__title {
+    color: #004a8d;
+    font-weight: 700;
+    display: inline-block; }
+  .tips .tips__icon {
+    color: #00afeb; }
+  .tips .tips__container {
+    display: inline; }
+    .tips .tips__container p {
+      display: none;
+      padding: 1.7rem 0 .5rem .5rem;
+      font-size: 20px;
+      color: #004a8d;
+      margin: 0; }
+      .tips .tips__container p.active {
+        display: inline; }
 
 .social {
-  padding: 1rem; }
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  line-height: 63px;
+  padding: 0 1em; }
+  @media screen and (min-width: 960px) {
+    .social {
+      display: block; } }
   .social .social__nav {
-    list-style: none; }
+    list-style: none;
+    padding: 0; }
   .social .social__item {
     display: inline-block;
     color: #00afeb;
-    padding-left: .5rem;
-    text-align: right; }
+    padding-left: .5rem; }
   .social .social__icon {
     padding: .5rem; }
 

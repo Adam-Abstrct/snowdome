@@ -1,8 +1,30 @@
 
+/** 
+ * Aaron's edits -- is this close to BEM? ;) 
+ */
+.module__wrap {
+	position: relative;
+    min-height: 1px;
+    padding-left: 5px;
+    padding-right: 5px;
+    float: left; 
+    width: 50%; 
+	margin-top: 10px; //  Turned into px so that we can match 2x the horizontal module gutter (5px);
+
+	@media screen and (min-width: $tablet-break) {
+		float: left; 
+		width: (100%/3);
+	}
+	@media screen and (min-width: $desktop-break) {
+		float: left; 
+		width: (100%/6);
+	}
+}
+
+
 .module {
 	background-color: $snow-grey;
 	padding: 1rem;
-	margin-top: 1.5rem;
 
 	.module__header {
 		color: $snow-dark-blue;
@@ -60,11 +82,15 @@
    		margin-top: -20px;
 
 
-		@media screen and (min-width: 1300px) {
+		@media screen and (min-width: $x-large-desktop-break) {
 			float: left;
 			width: 54%;
     		margin-top: 0px;
+			font-size: 26px;
+		}
 
+		@media screen and (min-width: $xx-large-desktop-break) {
+			font-size: 32px;
 		}
 
 		p {
@@ -72,18 +98,22 @@
 				top: 1.5rem;
 			}
 
-			@media screen and (min-width: 1300px) {
+			@media screen and (min-width: $xx-large-desktop-break) {
 				line-height: 2rem;
+			}
+			@media screen and (min-width: $xxx-large-desktop-break) {
+				line-height: 2.5rem;
 			}
 
 			span {
 				display: block;
 				text-align: center;
+				margin-top: 5px;
 			}
 		}
 
 		&#connection {
-			@media screen and (min-width: 1300px) {
+			@media screen and (min-width: $xx-large-desktop-break) {
 				font-size: 18px;
 			} 
 		}

@@ -20,9 +20,9 @@ function sizeGraph()
 {
 	var documentHeight = $('body').height();
 	var chart = $('.chart__main');
-	var footer = $('footer').height();
-	var header = $('header').height();
-	var moduleHeight = $('.module__co2').height();
+	var footer = $('footer').height()+parseInt($('footer').css("marginBottom"))+parseInt($('footer').css("marginTop"));
+	var header = $('.logo__snowdome').height();
+	var moduleHeight = $('.module__wrap').height()+parseInt($('.module__wrap').css('marginTop'));
 	var totalElements = header + footer + moduleHeight;
 	var chartHeight = documentHeight - totalElements
 

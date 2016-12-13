@@ -6,8 +6,8 @@ $(function(){
 
 
 	function tipFunction(){
-		tip.filter('.active').fadeOut(500).removeClass('active');
-		tip.eq(index).fadeIn(500).addClass('active');
+		tip.filter('.active').removeClass('active');
+		tip.eq(index).addClass('active');
 		index = (index + 1) % tip.length;
 		setTimeout(tipFunction, 8000);
 	}

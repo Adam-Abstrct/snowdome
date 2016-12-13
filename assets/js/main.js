@@ -14,9 +14,9 @@ $(function(){
 			jsonResponse = JSON.parse(data)
 
             df = jsonResponse.df;
-            dt = jsonResponse.dt;
-			
-			
+            dt = jsonResponse.dt;	
+
+            console.log(jsonResponse);		
 
 		},
 		error: function(data) {
@@ -116,22 +116,21 @@ $(function(){
 
 	function outputC02Data(data)
 	{
-	
 		var $c02 = $('#cO2 p');
-		$c02.html(data+' <span style="font-size:14px;" class="weight--normal"> tonnes per year </span>');
+		$c02.html(data+' <span style="font-size:14px;" class="weight--normal"> tonnes</span>');
 
 	}
 
 	function outputCarData(data)
 	{
 		var $cars = $('#cars p');
-		$cars.html(data+' <span style="font-size:14px;" class="weight--normal"> per year</span>');
+		$cars.html(data+' <span style="font-size:14px;" class="weight--normal"></span>');
 	}
 
 	function outputHousesData(data)
 	{
 		var $houses = $('#houses p');
-		$houses.html(data+' <span style="font-size:14px;" class="weight--normal"> per year</span>');
+		$houses.html(data+' <span style="font-size:14px;" class="weight--normal"></span>');
 	}
 
 	function outputGreenData(data)
@@ -169,9 +168,9 @@ function sizeGraph()
 {
 	var documentHeight = $('body').height();
 	var chart = $('.chart__main');
-	var footer = $('footer').height();
-	var header = $('header').height();
-	var moduleHeight = $('.module__co2').height();
+	var footer = $('footer').height()+parseInt($('footer').css("marginBottom"))+parseInt($('footer').css("marginTop"));
+	var header = $('.logo__snowdome').height();
+	var moduleHeight = $('.module__wrap').height()+parseInt($('.module__wrap').css('marginTop'));
 	var totalElements = header + footer + moduleHeight;
 	var chartHeight = documentHeight - totalElements
 
@@ -186,8 +185,8 @@ $(function(){
 
 
 	function tipFunction(){
-		tip.filter('.active').fadeOut(500).removeClass('active');
-		tip.eq(index).fadeIn(500).addClass('active');
+		tip.filter('.active').removeClass('active');
+		tip.eq(index).addClass('active');
 		index = (index + 1) % tip.length;
 		setTimeout(tipFunction, 8000);
 	}

@@ -232,6 +232,15 @@ $grid-gutter-width:         10px !default;
   @media (min-width: $large-desktop-break + $grid-gutter-width) {
     width: $large-desktop-break;
   }
+  @media (min-width: $x-large-desktop-break + $grid-gutter-width) {
+    width: $x-large-desktop-break;
+  }
+  @media (min-width: $xx-large-desktop-break + $grid-gutter-width) {
+    width: $xx-large-desktop-break;
+  }
+  @media (min-width: $xxx-large-desktop-break + $grid-gutter-width) {
+    width: $xxx-large-desktop-break;
+  }
 }
 
 
