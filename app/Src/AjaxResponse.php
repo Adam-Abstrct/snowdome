@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 namespace App\Src;
 
-require_once dirname(dirname(__FILE__)).'/../vendor/autoload.php';
+require_once dirname(__FILE__).'/../../vendor/autoload.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -31,7 +31,7 @@ try {
 	print_r($e->getMessage());
 }
 
-//Calculates Needed info from the response array given	
+//Calculates Needed info from the response array given
 $calculate = new EnergyCalculations($response , $period , $dates , $noWeeks);
 $ajaxResponse = $calculate->returnAllCalculations();
 
