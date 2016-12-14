@@ -20,17 +20,20 @@ $dates = $date->returnDates();
 $period = $date->setDatePeriod();
 
 //Returns API info for given date range
-//
 try {
 	$api = new SnowdomeAPI($dates);
 	$token = $api->createAuthToken();
-	$response = $api->createAPIURl($token);
+	$response = $api->createAPIURL($token);
+	$lifetime = $api->getLifetimeGeneration($token);
 } catch (Exception $e) {
 	print_r($e->getMessage());
 }
 
 //Calculates Needed info from the response array given
 $calculate = new EnergyCalculations($response , $period , $dates , $noWeeks);
-$ajaxResponse = $calculate->returnAllCalculations();
+$chart = $calculate->calculateChartInfo();
 
-echo $ajaxResponse;
+echo json_encode([
+	'chart' => $chart,
+	'lifetime_generation' => $lifetime
+]);

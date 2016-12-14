@@ -1052,8 +1052,8 @@ header {
     font-weight: 500;
     text-decoration: underline; }
 
-/** 
- * Aaron's edits -- is this close to BEM? ;) 
+/**
+ * Aaron's edits -- is this close to BEM? ;)
  */
 .module__wrap {
   position: relative;
@@ -1123,7 +1123,7 @@ header {
       .module .module__info {
         font-size: 32px; } }
     .module .module__info p {
-      padding-top: 1.5rem; }
+      padding-top: 2rem; }
       @media screen and (min-width: 1400px) {
         .module .module__info p {
           line-height: 2rem; } }

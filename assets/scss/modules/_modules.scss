@@ -1,22 +1,22 @@
 
-/** 
- * Aaron's edits -- is this close to BEM? ;) 
+/**
+ * Aaron's edits -- is this close to BEM? ;)
  */
 .module__wrap {
 	position: relative;
     min-height: 1px;
     padding-left: 5px;
     padding-right: 5px;
-    float: left; 
-    width: 50%; 
+    float: left;
+    width: 50%;
 	margin-top: 10px; //  Turned into px so that we can match 2x the horizontal module gutter (5px);
 
 	@media screen and (min-width: $tablet-break) {
-		float: left; 
+		float: left;
 		width: (100%/3);
 	}
 	@media screen and (min-width: $desktop-break) {
-		float: left; 
+		float: left;
 		width: (100%/6);
 	}
 }
@@ -36,11 +36,11 @@
 
 		@media screen and (min-width: 1300px) {
 			height: 38px;
-			font-size: 16px; 
+			font-size: 16px;
 		}
 		@media screen and (min-width: 1450px) {
 			height: auto;
-			font-size: 18px; 
+			font-size: 18px;
 		}
 
 	}
@@ -64,7 +64,7 @@
 		margin: .5rem;
 		line-height: 75px;
 		i {
-			font-size: 50px; 
+			font-size: 50px;
 			color: #00afeb;
 		}
 
@@ -95,7 +95,7 @@
 
 		p {
 			padding: {
-				top: 1.5rem;
+				top: 2rem;
 			}
 
 			@media screen and (min-width: $xx-large-desktop-break) {
@@ -115,7 +115,7 @@
 		&#connection {
 			@media screen and (min-width: $xx-large-desktop-break) {
 				font-size: 18px;
-			} 
+			}
 		}
 	}
 

@@ -116,7 +116,7 @@
         dist: {
           files: {
             '<%= pkg.pathlocal.js %>/main.min.js': ['<%= concat.dist.dest %>']
-          } 
+          }
         }
       },
       copy: {
@@ -129,7 +129,7 @@
       },
     });
 
-    grunt.registerTask('default', ['jshint', 'browserSync', 'watch']);
+    grunt.registerTask('default', ['jshint', 'browserSync', 'watch', 'concat' , 'uglify']);
     grunt.registerTask('deploy-theme', ['sftp-deploy:theme']);
     grunt.registerTask('deploy-plugins', ['sftp-deploy:plugins']);
     grunt.registerTask('javascript' , ['concat' , 'uglify']);

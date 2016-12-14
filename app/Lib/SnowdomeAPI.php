@@ -1,14 +1,14 @@
-<?php 
+<?php
 
 namespace App\Lib;
 use DateTime;
 use Exception;
 
 /**
-* 
+*
 */
 class SnowdomeAPI {
-	
+
 
 	public $apiResponse;
 	public $url;
@@ -22,7 +22,7 @@ class SnowdomeAPI {
 	// 	$this->dateTo = $dt;
 
 	// }
-	// 
+	//
 	public function __construct($dates)
 	{
 		if(!isset($_SESSION) )
@@ -42,7 +42,7 @@ class SnowdomeAPI {
 
 		$rt = $this->checkRememberStatus();
 
-	
+
 		if(isset($rt) && !empty($rt))
 		{
 			$data = [
@@ -68,39 +68,34 @@ class SnowdomeAPI {
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_POST, 3);
 		curl_setopt($ch, CURLOPT_POSTFIELDS , json_encode($data));
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-		$output = curl_exec($ch); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$output = curl_exec($ch);
 		curl_close($ch);
 
  		$fields = json_decode($output);
- 
- 
+
+
 		if(!isset($_SESSION['refresh_token']))
 		{
 			$now = new DateTime('NOW');
 			$nutc = $now->format("U");
 
 			$expireTime = new DateTime('tomorrow');
-			$eutc = $expireTime->format("U");	
+			$eutc = $expireTime->format("U");
 
 			$_SESSION['refresh_token'] = $fields->refresh_token;
  	 		$_SESSION['refresh_start'] = (int)  $nutc;
  		 	$_SESSION['refresh_expire'] = (int) $eutc;
 		}
- 
+
  		return $fields->access_token;
 
 
 	}
 
-	public function createAPIURl($token)
+	public function createAPIURL($token)
 	{
-		$url = 'http://ems-api.lightsource-re.co.uk/api/resources/readings/installation_id/7e0e0085-e34b-3bd1-fa92-56fb9192b898?start='.$this->dateFrom.'&end='.$this->dateTo.'&interval=86400';	
-
-
-		//$url = 'http://ems-api.lightsource-re.co.uk/api/resources/readings/installation_id/7e0e0085-e34b-3bd1-fa92-56fb9192b898?start=1464220800&end=1475625600&interval=86400';	
-
-		//86400
+		$url = 'http://ems-api.lightsource-re.co.uk/api/resources/readings/installation_id/7e0e0085-e34b-3bd1-fa92-56fb9192b898?start='.$this->dateFrom.'&end='.$this->dateTo.'&interval=86400';
 
 		$headers = [
 			'Pragma: no-cache',
@@ -114,28 +109,52 @@ class SnowdomeAPI {
 			'Referer: http://ems.lightsource-re.co.uk/pulse/module/Portfolios/record/7d87e3b9-973e-abcf-7459-573b34b2b5c8/Overview'
 		];
 
-
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL , $url );
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-		$output = curl_exec($ch); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$output = curl_exec($ch);
 		curl_close($ch);
 		$unzipped = gzdecode($output);
 		$decoded = json_decode($unzipped);
 
-		// print_r("<pre>");
-		// var_dump($decoded);
-		// print_r("</pre>");
-		
-
-		//  die;
-
-	
 		if($decoded->http_status != 200) {
 			throw new Exception("Could not connect to external API");
 		} else {
-			return $decoded;
+			return $decoded->data->records[4]; // Generation (kWh)
+		}
+
+	}
+
+	public function getLifetimeGeneration($token)
+	{
+		$url = 'http://ems-api.lightsource-re.co.uk/api/resources/readings/installation_id/7e0e0085-e34b-3bd1-fa92-56fb9192b898?start=1420070400&interval=86400';
+
+		$headers = [
+			'Pragma: no-cache',
+			'Origin: http://ems.lightsource-re.co.uk',
+			'Accept-Encoding: gzip, deflate, sdch',
+			'Accept-Language: en-US,en;q=0.8,ru;q=0.6',
+			'Authorization: Bearer '.$token.'',
+			'Accept: application/json, text/plain, */*',
+			'Cache-Control: no-cache',
+			'Connection: keep-alive',
+			'Referer: http://ems.lightsource-re.co.uk/pulse/module/Portfolios/record/7d87e3b9-973e-abcf-7459-573b34b2b5c8/Overview'
+		];
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL , $url );
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		$output = curl_exec($ch);
+		curl_close($ch);
+		$unzipped = gzdecode($output);
+		$decoded = json_decode($unzipped);
+
+		if($decoded->http_status != 200) {
+			throw new Exception("Could not connect to external API");
+		} else {
+			return $decoded->data->records[4]->total; // Generation (kWh)
 		}
 
 	}
@@ -151,10 +170,10 @@ class SnowdomeAPI {
 		if(!isset($_SESSION['refresh_token']) && empty($_SESSION['refresh_token']))
 		{
 			return null;
-		} 
+		}
 
 		if(isset($_SESSION['refresh_token'])) {
-			
+
 			if((int)$nutc < (int)$_SESSION['refresh_expire'] )
 			{
 				return $_SESSION['refresh_token'];
@@ -163,8 +182,8 @@ class SnowdomeAPI {
 				return null;
 			}
 
-		} 
-	
+		}
+
 	}
 
 

@@ -1,10 +1,8 @@
-
-
 $(function(){
 
 	var jsonResponse;
-    var df;
-    var dt;
+  var df;
+  var dt;
 
 	$.ajax({
 		url: "app/Src/AjaxResponse.php",
@@ -13,22 +11,45 @@ $(function(){
 
 			jsonResponse = JSON.parse(data)
 
-            df = jsonResponse.df;
-            dt = jsonResponse.dt;	
+      df = jsonResponse.df;
+      dt = jsonResponse.dt;
 
-            console.log(jsonResponse);		
+	      console.log(jsonResponse.lifetime_generation);
 
 		},
 		error: function(data) {
 
 		},
 		complete: function() {
- 		    outputChartData(jsonResponse.chart);
-            outputC02Data(jsonResponse.C02);
-            outputCarData(jsonResponse.cars);
-            outputHousesData(jsonResponse.houses);
-            outputGreenData(jsonResponse.green);
-		} 
+			outputChartData(jsonResponse.chart);
+
+
+			/**
+			 * CO2 box
+			 */
+			var co2_val = (jsonResponse.lifetime_generation * 0.517) / 1000;
+		  $('#cO2 p').html( Math.round(co2_val) +' <span style="font-size:14px;" class="weight--normal"> tonnes</span>');
+
+			/**
+			 * cars
+			 */
+			$('#cars p').html( Math.round( co2_val/ 4.5 ) +' <span style="font-size:14px;" class="weight--normal"></span>');
+
+			/**
+			 * Houses
+			 */
+			$('#houses p').html( Math.round( co2_val/ 3.1 ) +' <span style="font-size:14px;" class="weight--normal"></span>');
+
+			/**
+			 * Generation
+			 */
+			$('#green').html( Math.round( jsonResponse.lifetime_generation/ 1000 ) +' MWh');
+
+
+			// outputCarData(jsonResponse.cars);
+			// outputHousesData(jsonResponse.houses);
+			// outputGreenData(jsonResponse.green);
+		}
 	});
 
 
@@ -42,9 +63,9 @@ $(function(){
 		chart: {
 			backgroundColor: '#f9f9f9',
             style:{
-             'height' :  cH+'px'   
+             'height' :  cH+'px'
             }
-		},	
+		},
         title: {
             text: 'Weekly Solar Generation',
             useHTML: true,
@@ -105,21 +126,16 @@ $(function(){
         for (var i = 0; i < generated.length ; i++) { //loops 6 times
             temp.push(generated[i]);
         }
-    
 
-        chart.series[0].setData(temp);        
+
+        chart.series[0].setData(temp);
         chart.xAxis[0].update({categories: data.legend });
-    
+
 
 	}
-	
 
-	function outputC02Data(data)
-	{
-		var $c02 = $('#cO2 p');
-		$c02.html(data+' <span style="font-size:14px;" class="weight--normal"> tonnes</span>');
 
-	}
+
 
 	function outputCarData(data)
 	{
@@ -140,6 +156,7 @@ $(function(){
 	}
 
 })
+
 $(function(){
 
 	$('.module').matchHeight();
