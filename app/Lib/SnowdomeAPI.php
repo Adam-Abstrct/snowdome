@@ -154,7 +154,7 @@ class SnowdomeAPI {
 		if($decoded->http_status != 200) {
 			throw new Exception("Could not connect to external API");
 		} else {
-			return $decoded->data->records[4]->total; // Generation (kWh)
+			return $decoded->data->records[4]->total + 53457.47; // Generation (kWh)
 		}
 
 	}
