@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="refresh" content="86400">
+	<meta http-equiv="refresh" content="3600">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<META name="robots" content="noindex, nofollow">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
@@ -10,7 +10,7 @@
 
 	<script src="https://use.typekit.net/cua7pjh.js"></script>
 	<script>try{Typekit.load({ async: true });}catch(e){}</script>
- 
+
 </head>
 <body>
 
@@ -23,14 +23,14 @@
 
 			<div class="green"> Total Green Energy Generation <span id="green"></span></div>
 			<img class="logo__lightsource" src="assets/imgs/logo-white.png">
-			
+
 		</div>
 	</header>
 
 	<div class="container">
 		<!-- Main Graph -->
 		<div class="chart__main" style="width:100%;"></div>
-			
+
 		<div class="row">
 
 			<div class="module__wrap">
@@ -40,7 +40,7 @@
 						<div class="module__icon-wrap">
 							<img class="module__image" src="assets/imgs/c02.png">
 						</div>
-						<div class="module__info" id="cO2"><p></p></div>	
+						<div class="module__info" id="cO2"><p></p></div>
 					</div>
 				</div>
 			</div>
@@ -50,9 +50,9 @@
 					<h3 class="module__header">CARS OFF THE ROAD </h3>
 					<div class="module__content">
 						<div class="module__icon-wrap">
-							<div class="module__icon"><i class="fa fa-car" aria-hidden="true"></i></div> 
+							<div class="module__icon"><i class="fa fa-car" aria-hidden="true"></i></div>
 						</div>
-						<div class="module__info" id="cars"><p></p></div>	
+						<div class="module__info" id="cars"><p></p></div>
 					</div>
 				</div>
 			</div>
@@ -74,9 +74,9 @@
 					<h3 class="module__header">INSTALLED CAPACITY </h3>
 					<div class="module__content">
 						<div class="module__icon-wrap">
-							<div class="module__icon"><i class="fa fa-bolt" aria-hidden="true"></i></div> 
+							<div class="module__icon"><i class="fa fa-bolt" aria-hidden="true"></i></div>
 						</div>
-						<div class="module__info"><p>250 <span style="font-size:14px;" class="weight--normal"> kWp</span></p></div>	
+						<div class="module__info"><p>250 <span style="font-size:14px;" class="weight--normal"> kWp</span></p></div>
 					</div>
 				</div>
 			</div>
@@ -86,14 +86,14 @@
 					<h3 class="module__header">CONNECTION DATE </h3>
 					<div class="module__content">
 						<div class="module__icon-wrap">
-							<div class="module__icon"><i class="fa fa-calendar" aria-hidden="true"></i></div> 
+							<div class="module__icon"><i class="fa fa-calendar" aria-hidden="true"></i></div>
 						</div>
 						<div class="module__info" id="connection"><p>03-01-15</p></div>
 					</div>
 				</div>
 			</div>
 
-		
+
 			<div class="module__wrap">
 				<div class="module">
 					<h3 class="module__header">NUMER OF PANELS </h3>
@@ -103,13 +103,13 @@
 								<i class="fa fa-sun-o" aria-hidden="true"></i>
 							</div>
 						</div>
-						<div class="module__info"><p>943 <span style="font-size:14px;" class="weight--normal">panels</span></p></div>	
+						<div class="module__info"><p>943 <span style="font-size:14px;" class="weight--normal">panels</span></p></div>
 					</div>
 				</div>
 			</div>
 
 
-		
+
 
 		</div>
 	</div>
@@ -139,19 +139,19 @@
 			</div>
 			<div class="social">
 				<ul class="social__nav">
-					<li class="social__item"><i class="fa fa-twitter social__icon" aria-hidden="true"></i>@SnowDomeTam</li>		
-					<li class="social__item"><i class="fa fa-twitter social__icon" aria-hidden="true"></i>@LightsourceRE</li>		
+					<li class="social__item"><i class="fa fa-twitter social__icon" aria-hidden="true"></i>@SnowDomeTam</li>
+					<li class="social__item"><i class="fa fa-twitter social__icon" aria-hidden="true"></i>@LightsourceRE</li>
 				</ul>
-			</div>	
+			</div>
 		</footer>
-	</div>	
+	</div>
 
 	<script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
 	<script src="https://code.highcharts.com/highcharts.js"></script>
 	<script src="https://code.highcharts.com/modules/data.js"></script>
 	<script type="text/javascript" src="./assets/js/main.min.js"></script>
-	
+
 
 </body>
 </html>
