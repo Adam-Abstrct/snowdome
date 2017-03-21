@@ -17,14 +17,21 @@ class EnergyCalculations
 	public $consumption;
 	public $datePeriod;
 	public $noWeeks;
+	public $today;
 
-	function __construct($info , $period , $dates , $weeks )
+	function __construct($info , $totalTillToday, $totalTillYesterday , $period , $dates , $weeks )
 	{
+
 		$this->generation = $info;
-		// $this->results = $info;
+		$this->totalToday = $totalTillToday;
+		$this->totalYesterday = $totalTillYesterday;
 		$this->datePeriod = $period;
 		$this->dates = $dates;
 		$this->noWeeks = $weeks;
+
+		// var_dump($this->totalToday , $this->totalYesterday);
+		// die;
+
 	}
 
 	/**
@@ -42,38 +49,43 @@ class EnergyCalculations
 	public function calculateChartInfo()
 	{
 
-	    $legend = [];
-	    $formattedDates = [];
+		$UTC = new DateTimeZone("UTC");
+		$now = new DateTime('today', $UTC );
+		$nowUTC = $now->format("U");
+
+		$legend = [];
+    $formattedDates = [];
+
+		// var_dump($this->datePeriod);
+		// die;
+
 
 	    foreach ($this->datePeriod as $key => $dates) {
-	      if($key%7 == 0) {
-					$legend[] = $dates->format('d-M');
-	    	}
+				$legend[] = $dates->format('d-M');
 	      $formattedDates[] =  (int) $dates->format("U");
 	    }
 
-	    $selectedDates = [];
+
+
+	    $selectedValues = [];
 	    foreach ($this->generation->readings as $value) {
-	    	if(in_array($value->timestamp, $formattedDates))
+
+				if($value->timestamp == $nowUTC )
+				{
+					$selectedValues[] = round($this->totalToday - $this->totalYesterday);
+				} else if(in_array($value->timestamp, $formattedDates))
 	    	{
 	    		$selectedValues[] = round($value->value, 2);
 	    	}
+
+
 	    }
+			//
+			// var_dump($selectedValues);
+			// die;
 
-	    $newArray = [];
-	    $key = 0;
-	    $weeklyValue = 0;
-	    for ($i=0; $i < count($selectedValues) ; $i++) {
-	    	$weeklyValue += $selectedValues[$i];
 
-	    	if($i%7 == 0 && $i !== 0) {
-				$newArray[$key] = $weeklyValue;
-				$weeklyValue = 0;
-				$key++;
-	    	}
-	    }
-
-	    return ['generated' => $newArray , 'legend' => $legend ];
+	    return ['generated' => $selectedValues , 'legend' => $legend ];
 
 	}
 

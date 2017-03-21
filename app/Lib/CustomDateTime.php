@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Lib;
 
@@ -8,11 +8,11 @@ use DatePeriod;
 use DateInterval;
 
 /**
-* 
+*
 */
 class CustomDateTime
 {
-	
+
 	public $unixFrom;
 	public $unixTo;
 	public $toDate;
@@ -20,9 +20,9 @@ class CustomDateTime
 	public $now;
 
 
-	function __construct($weeks)
+	function __construct($days)
 	{
-		$this->noWeeks = $weeks;
+		$this->noDays = $days;
 	}
 
 	public function returnDates()
@@ -36,8 +36,8 @@ class CustomDateTime
 	public function getUnixFrom()
 	{
 		$UTC = new DateTimeZone("UTC");
-        $from_date = new DateTime('last sunday', $UTC ); 
-        $from_date->modify('-'.$this->noWeeks.' weeks');
+    $from_date = new DateTime('now', $UTC );
+        $from_date->modify('-'.$this->noDays.' days');
         $from_date->setTime(00, 00);
         $this->fromDate = $from_date;
         $this->unixFrom = $from_date->format("U");
@@ -45,19 +45,20 @@ class CustomDateTime
 
 	public function getUnixTo()
 	{
-		$UTC = new DateTimeZone("UTC");	
-		$to_date = new DateTime('last sunday' , $UTC ); 
+		$UTC = new DateTimeZone("UTC");
+		$to_date = new DateTime('now' , $UTC );
         $to_date->setTime(00, 00);
-        $this->toDate = $to_date->modify('+1 day'); 
+        $this->toDate = $to_date->modify('+1 day');
         $this->displayTo = $to_date;
         $this->unixTo = $to_date->format("U");
+
 	}
 
 	public function setDisplayDate()
 	{
-		$UTC = new DateTimeZone("UTC");	
-		$display_date = new DateTime('Today' , $UTC ); 
-		$this->displayDate = $display_date->modify('-1 day');	
+		$UTC = new DateTimeZone("UTC");
+		$display_date = new DateTime('Today' , $UTC );
+		$this->displayDate = $display_date;
 	}
 
 	public function setDatePeriod()
@@ -65,6 +66,6 @@ class CustomDateTime
         return new DatePeriod( $this->fromDate , new DateInterval( "P1D" ), $this->toDate);
 	}
 
-	
+
 
 }

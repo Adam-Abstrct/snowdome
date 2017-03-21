@@ -8,21 +8,15 @@ $(function(){
 		url: "app/Src/AjaxResponse.php",
 		type: "POST",
 		success: function(data) {
-
 			jsonResponse = JSON.parse(data)
-
       df = jsonResponse.df;
       dt = jsonResponse.dt;
-
-	      console.log(jsonResponse.lifetime_generation);
-
 		},
 		error: function(data) {
 
 		},
 		complete: function() {
 			outputChartData(jsonResponse.chart);
-
 
 			/**
 			 * CO2 box
@@ -45,10 +39,6 @@ $(function(){
 			 */
 			$('#green').html( Math.round( jsonResponse.lifetime_generation/ 1000 ) +' MWh');
 
-
-			// outputCarData(jsonResponse.cars);
-			// outputHousesData(jsonResponse.houses);
-			// outputGreenData(jsonResponse.green);
 		}
 	});
 
@@ -132,27 +122,6 @@ $(function(){
         chart.xAxis[0].update({categories: data.legend });
 
 
-	}
-
-
-
-
-	function outputCarData(data)
-	{
-		var $cars = $('#cars p');
-		$cars.html(data+' <span style="font-size:14px;" class="weight--normal"></span>');
-	}
-
-	function outputHousesData(data)
-	{
-		var $houses = $('#houses p');
-		$houses.html(data+' <span style="font-size:14px;" class="weight--normal"></span>');
-	}
-
-	function outputGreenData(data)
-	{
-		var $green = $('#green');
-		$green.html(data+' MWh');
 	}
 
 })

@@ -12,10 +12,10 @@ use App\Lib\SnowdomeAPI;
 use App\Lib\EnergyCalculations;
 use Exception;
 
-$noWeeks = 7;
+$noDays = 28;
 
 //Builds Unix Date Objects
-$date = new CustomDateTime($noWeeks);
+$date = new CustomDateTime($noDays);
 $dates = $date->returnDates();
 $period = $date->setDatePeriod();
 
@@ -23,14 +23,16 @@ $period = $date->setDatePeriod();
 try {
 	$api = new SnowdomeAPI($dates);
 	$token = $api->createAuthToken();
-	$response = $api->createAPIURL($token);
-	$lifetime = $api->getLifetimeGeneration($token);
+	$totalTillToday = $api->returnFTPData(); // returns current totalTillToday
+	$response = $api->createAPIURL($token); // gets daily data for a week
+	$lifetime = $api->getLifetimeGeneration($token); // gets lifetime date until yesterday
+
 } catch (Exception $e) {
 	print_r($e->getMessage());
 }
 
 //Calculates Needed info from the response array given
-$calculate = new EnergyCalculations($response , $period , $dates , $noWeeks);
+$calculate = new EnergyCalculations($response , $totalTillToday , $lifetime , $period , $dates , $noDays);
 $chart = $calculate->calculateChartInfo();
 
 echo json_encode([
