@@ -20,10 +20,10 @@
     "staging": "127.0.0.1"
   },
   "pathlocal": {
-    "css": "/www/sites/snowdome/webroot/assets/css",
-    "scss": "/www/sites/snowdome/webroot/assets/scss",
-    "img": "/www/sites/snowdome/webroot/assets/imgs",
-    "js": "/www/sites/snowdome/webroot/assets/js",
+    "css": "./assets/css",
+    "scss": "./assets/scss",
+    "img": "./assets/imgs",
+    "js": "./assets/js",
     "root": "/www/sites/wp-test/webroot"
   },
   "pathlive": {},

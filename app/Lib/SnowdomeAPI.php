@@ -4,6 +4,10 @@ namespace App\Lib;
 use DateTime;
 use Exception;
 
+
+date_default_timezone_set("Europe/London");
+ini_set( 'date.timezone', 'Europe/London' );
+
 /**
 *
 */
@@ -25,6 +29,9 @@ class SnowdomeAPI {
 	//
 	public function __construct($dates)
 	{
+		ini_set('error_reporting', E_ALL);
+
+
 		if(!isset($_SESSION) )
 		{
 			session_start();
@@ -34,6 +41,7 @@ class SnowdomeAPI {
 		$this->dateFrom = $dates['unixFrom'];
 		$this->dateTo = $dates['unixTo'];
 	}
+
 
 	public function createAuthToken()
 	{
@@ -154,11 +162,10 @@ class SnowdomeAPI {
 		if($decoded->http_status != 200) {
 			throw new Exception("Could not connect to external API");
 		} else {
-			return $decoded->data->records[4]->total + 53457.47; // Generation (kWh)
+			return $decoded->data->records[2]->total + 53457.47; // Generation (kWh)
 		}
 
 	}
-
 
 	public function checkRememberStatus()
 	{
@@ -184,6 +191,63 @@ class SnowdomeAPI {
 
 		}
 
+	}
+
+
+	public function createFTPAccess()
+	{
+		$conn_id = ftp_connect("ftp.lightsource-re.co.uk") or die("Could not connect to $ftp_server");
+		$login_result = ftp_login($conn_id, "asldashboard", "ieC5phieeebei2Ni");
+		ftp_pasv($conn_id, true);
+		$contents = ftp_nlist($conn_id, ".");
+		return ['contents' => $contents , 'conn_id' => $conn_id ];
+	}
+
+	public function configureFTPPattern()
+	{
+		$now = date('YmdH');
+		// We only get the first part of the minute variable as the
+		// regex picks up the rest below!
+		$minute_start = (date('i') >= 30 ? "3" : "0" );
+		return "/^[0-9a-zA-Z\-\_]+{$now}{$minute_start}[0-9]{3}\.csv/";
+	}
+
+
+	public function returnFTPData()
+	{
+
+		$contents = $this->createFTPAccess();
+		$pattern = $this->configureFTPPattern();
+
+
+		$results = preg_grep($pattern, $contents['contents']);
+
+
+		if ($results) {
+		  $filenames = array_values($results);
+		  $filename = $filenames[0];
+
+
+		  ob_start();
+		  $file = ftp_get($contents['conn_id'], "php://output", $filename, FTP_BINARY);
+		  $file_contents = ob_get_contents();
+		  ob_end_clean();
+
+		  $install_id_pattern = "/^.*\b10067001\b.*$/m";
+		  preg_match($install_id_pattern, $file_contents, $row_matches);
+
+
+		  if ($row_matches && count($row_matches) == 1) {
+		    $generation_data = explode(",", $row_matches[0]);
+		    $total_generation_watts = $generation_data[3];
+		    $total_generation = $total_generation_watts /1000;
+
+				return $total_generation ;
+
+		  }
+		} else {
+
+		}
 	}
 
 
