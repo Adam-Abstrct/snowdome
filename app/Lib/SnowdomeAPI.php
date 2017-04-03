@@ -115,8 +115,8 @@ class SnowdomeAPI {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		$output = curl_exec($ch);
 		curl_close($ch);
-		$unzipped = gzdecode($output);
-		$decoded = json_decode($unzipped);
+		// $unzipped = gzdecode($output);
+		$decoded = json_decode($output);
 
 		if($decoded->http_status != 200) {
 			throw new Exception("Could not connect to external API");
@@ -148,8 +148,8 @@ class SnowdomeAPI {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		$output = curl_exec($ch);
 		curl_close($ch);
-		$unzipped = gzdecode($output);
-		$decoded = json_decode($unzipped);
+		// $unzipped = gzdecode($output);
+		$decoded = json_decode($output);
 
 		if($decoded->http_status != 200) {
 			throw new Exception("Could not connect to external API");
