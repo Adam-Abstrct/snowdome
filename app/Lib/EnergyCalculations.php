@@ -19,18 +19,16 @@ class EnergyCalculations
 	public $noWeeks;
 	public $today;
 
-	function __construct($info , $totalTillToday, $totalTillYesterday , $period , $dates , $weeks )
+	function __construct($info , $totalTillToday, $period , $dates , $weeks )
 	{
 
 		$this->generation = $info;
-		$this->totalToday = $totalTillToday;
-		$this->totalYesterday = $totalTillYesterday;
+		$data = $this->configureTotal($totalTillToday);
+		$this->difference = $data['difference'];
+		$this->totalGen = $data['total'];
 		$this->datePeriod = $period;
 		$this->dates = $dates;
 		$this->noWeeks = $weeks;
-
-		// var_dump($this->totalToday , $this->totalYesterday);
-		// die;
 
 	}
 
@@ -56,36 +54,39 @@ class EnergyCalculations
 		$legend = [];
     $formattedDates = [];
 
-		// var_dump($this->datePeriod);
-		// die;
 
+    foreach ($this->datePeriod as $key => $dates) {
+			$legend[] = $dates->format('d-M');
+      $formattedDates[] =  (int) $dates->format("U");
+    }
 
-	    foreach ($this->datePeriod as $key => $dates) {
-				$legend[] = $dates->format('d-M');
-	      $formattedDates[] =  (int) $dates->format("U");
-	    }
+    $selectedValues = [];
+    foreach ($this->generation->readings as $value) {
 
+			if($value->timestamp == $nowUTC )
+			{
+				$selectedValues[] = round($this->difference,2);
+			} else if(in_array($value->timestamp, $formattedDates))
+    	{
+    		$selectedValues[] = round($value->value, 2);
+    	}
+    }
 
+	    return ['chart'=>['generated' => $selectedValues , 'legend' => $legend], 'lifetime' => $this->totalGen ];
 
-	    $selectedValues = [];
-	    foreach ($this->generation->readings as $value) {
+	}
 
-				if($value->timestamp == $nowUTC )
-				{
-					$selectedValues[] = round($this->totalToday - $this->totalYesterday);
-				} else if(in_array($value->timestamp, $formattedDates))
-	    	{
-	    		$selectedValues[] = round($value->value, 2);
-	    	}
+	/**
+	 * [configureTotal description]
+	 * @return [type] [description]
+	 */
+	public function configureTotal($array)
+	{
+		$firstEl =  array_values(array_slice($array, 0))[0];
+		$lastEl = array_values(array_slice($array, -1))[0];
+		$difference = $lastEl->value - $firstEl->value;
 
-
-	    }
-			//
-			// var_dump($selectedValues);
-			// die;
-
-
-	    return ['generated' => $selectedValues , 'legend' => $legend ];
+		return ['difference' => $difference , 'total' => $lastEl->value ];
 
 	}
 

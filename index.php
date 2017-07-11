@@ -88,7 +88,7 @@
 						<div class="module__icon-wrap">
 							<div class="module__icon"><i class="fa fa-calendar" aria-hidden="true"></i></div>
 						</div>
-						<div class="module__info" id="connection"><p>03-01-15</p></div>
+						<div class="module__info" id="connection"><p>24-03-2016</p></div>
 					</div>
 				</div>
 			</div>

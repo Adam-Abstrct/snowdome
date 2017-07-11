@@ -57,7 +57,7 @@ $(function(){
             }
 		},
         title: {
-            text: 'Weekly Solar Generation',
+            text: 'Daily Solar Generation',
             useHTML: true,
             style: {
             	'background-color': '#00afeb',
@@ -121,7 +121,6 @@ $(function(){
         chart.series[0].setData(temp);
         chart.xAxis[0].update({categories: data.legend });
 
-
 	}
 
 })
@@ -134,7 +133,7 @@ $(function(){
 });
 $(function(){
 
-	$(window).on('load', function() { 
+	$(window).on('load', function() {
 		setTimeout(function(){
 			sizeGraph();
 		} , 4000);
@@ -144,9 +143,9 @@ $(function(){
 		sizeGraph();
 	});
 
-	
 
-	
+
+
 
 });
 

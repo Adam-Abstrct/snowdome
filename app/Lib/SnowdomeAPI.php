@@ -2,6 +2,7 @@
 
 namespace App\Lib;
 use DateTime;
+use DateTimeZone;
 use Exception;
 
 
@@ -20,23 +21,13 @@ class SnowdomeAPI {
 	public $dateTo;
 	public $auth_token;
 
-	// function __construct(integer $df ,  integer $dt)
-	// {
-	// 	$this->dateFrom = $df;
-	// 	$this->dateTo = $dt;
-
-	// }
-	//
 	public function __construct($dates)
 	{
-		ini_set('error_reporting', E_ALL);
-
 
 		if(!isset($_SESSION) )
 		{
 			session_start();
 		}
-
 
 		$this->dateFrom = $dates['unixFrom'];
 		$this->dateTo = $dates['unixTo'];
@@ -47,9 +38,7 @@ class SnowdomeAPI {
 	{
 
 		$ch = curl_init();
-
 		$rt = $this->checkRememberStatus();
-
 
 		if(isset($rt) && !empty($rt))
 		{
@@ -72,7 +61,7 @@ class SnowdomeAPI {
 			'Content-Type: application/json'
 		];
 
-		curl_setopt($ch, CURLOPT_URL , "http://ems-api.lightsource-re.co.uk/auth/token");
+		curl_setopt($ch, CURLOPT_URL , "https://ems-api.lightsource-re.co.uk/auth/token");
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_POST, 3);
 		curl_setopt($ch, CURLOPT_POSTFIELDS , json_encode($data));
@@ -103,18 +92,18 @@ class SnowdomeAPI {
 
 	public function createAPIURL($token)
 	{
-		$url = 'http://ems-api.lightsource-re.co.uk/api/resources/readings/installation_id/7e0e0085-e34b-3bd1-fa92-56fb9192b898?start='.$this->dateFrom.'&end='.$this->dateTo.'&interval=86400';
+		$url = 'https://ems-api.lightsource-re.co.uk/api/resources/readings/installation_id/7e0e0085-e34b-3bd1-fa92-56fb9192b898?start='.$this->dateFrom.'&end='.$this->dateTo.'&interval=86400';
 
 		$headers = [
 			'Pragma: no-cache',
-			'Origin: http://ems.lightsource-re.co.uk',
+			'Origin: https://ems.lightsource-re.co.uk',
 			'Accept-Encoding: gzip, deflate, sdch',
 			'Accept-Language: en-US,en;q=0.8,ru;q=0.6',
 			'Authorization: Bearer '.$token.'',
 			'Accept: application/json, text/plain, */*',
 			'Cache-Control: no-cache',
 			'Connection: keep-alive',
-			'Referer: http://ems.lightsource-re.co.uk/pulse/module/Portfolios/record/7d87e3b9-973e-abcf-7459-573b34b2b5c8/Overview'
+			'Referer: https://ems.lightsource-re.co.uk/pulse/module/Portfolios/record/7d87e3b9-973e-abcf-7459-573b34b2b5c8/Overview'
 		];
 
 		$ch = curl_init();
@@ -124,30 +113,42 @@ class SnowdomeAPI {
 		$output = curl_exec($ch);
 		curl_close($ch);
 		// $unzipped = gzdecode($output);
+		// var_dump($unzipped);
+
 		$decoded = json_decode($output);
 
 		if($decoded->http_status != 200) {
 			throw new Exception("Could not connect to external API");
 		} else {
-			return $decoded->data->records[4]; // Generation (kWh)
+			return $decoded->data->records[2]; // Generation (kWh)
 		}
 
 	}
 
-	public function getLifetimeGeneration($token)
+	public function getDifference($token)
 	{
-		$url = 'http://ems-api.lightsource-re.co.uk/api/resources/readings/installation_id/7e0e0085-e34b-3bd1-fa92-56fb9192b898?start=1420070400&interval=86400';
+
+		// need midnight last night utc
+		// need now utc
+		//
+
+		$UTC = new DateTimeZone("UTC");
+		$from  = new DateTime('Today' , $UTC );
+		$end  = new DateTime('now' , $UTC );
+		$url = 'https://ems-api.lightsource-re.co.uk/api/resources/reading_snapshots/measurement_id/3d06063b-81ed-704e-25f7-5718fcd7c3b8?start='.$from->format('U').'&end='.$end->format('U');
+
+		// https://ems-api.lightsource-re.co.uk/api/resources/reading_snapshots/installation_id/7e0e0085-e34b-3bd1-fa92-56fb9192b898?start=1489795200&end=1489968000
 
 		$headers = [
 			'Pragma: no-cache',
-			'Origin: http://ems.lightsource-re.co.uk',
+			'Origin: https://ems.lightsource-re.co.uk',
 			'Accept-Encoding: gzip, deflate, sdch',
 			'Accept-Language: en-US,en;q=0.8,ru;q=0.6',
-			'Authorization: Bearer '.$token.'',
+			'Authorization: Bearer '.$token,
 			'Accept: application/json, text/plain, */*',
 			'Cache-Control: no-cache',
 			'Connection: keep-alive',
-			'Referer: http://ems.lightsource-re.co.uk/pulse/module/Portfolios/record/7d87e3b9-973e-abcf-7459-573b34b2b5c8/Overview'
+			'Referer: https://ems.lightsource-re.co.uk/pulse/module/Portfolios/record/7d87e3b9-973e-abcf-7459-573b34b2b5c8/Overview'
 		];
 
 		$ch = curl_init();
@@ -162,7 +163,7 @@ class SnowdomeAPI {
 		if($decoded->http_status != 200) {
 			throw new Exception("Could not connect to external API");
 		} else {
-			return $decoded->data->records[2]->total + 53457.47; // Generation (kWh)
+			return $decoded->data->records[0]->readings; // Generation (kWh)
 		}
 
 	}
@@ -172,8 +173,6 @@ class SnowdomeAPI {
 
 		$now = new DateTime('NOW');
 		$nutc = $now->format("U");
-
-
 		if(!isset($_SESSION['refresh_token']) && empty($_SESSION['refresh_token']))
 		{
 			return null;
@@ -191,63 +190,6 @@ class SnowdomeAPI {
 
 		}
 
-	}
-
-
-	public function createFTPAccess()
-	{
-		$conn_id = ftp_connect("ftp.lightsource-re.co.uk") or die("Could not connect to $ftp_server");
-		$login_result = ftp_login($conn_id, "asldashboard", "ieC5phieeebei2Ni");
-		ftp_pasv($conn_id, true);
-		$contents = ftp_nlist($conn_id, ".");
-		return ['contents' => $contents , 'conn_id' => $conn_id ];
-	}
-
-	public function configureFTPPattern()
-	{
-		$now = date('YmdH');
-		// We only get the first part of the minute variable as the
-		// regex picks up the rest below!
-		$minute_start = (date('i') >= 30 ? "3" : "0" );
-		return "/^[0-9a-zA-Z\-\_]+{$now}{$minute_start}[0-9]{3}\.csv/";
-	}
-
-
-	public function returnFTPData()
-	{
-
-		$contents = $this->createFTPAccess();
-		$pattern = $this->configureFTPPattern();
-
-
-		$results = preg_grep($pattern, $contents['contents']);
-
-
-		if ($results) {
-		  $filenames = array_values($results);
-		  $filename = $filenames[0];
-
-
-		  ob_start();
-		  $file = ftp_get($contents['conn_id'], "php://output", $filename, FTP_BINARY);
-		  $file_contents = ob_get_contents();
-		  ob_end_clean();
-
-		  $install_id_pattern = "/^.*\b10067001\b.*$/m";
-		  preg_match($install_id_pattern, $file_contents, $row_matches);
-
-
-		  if ($row_matches && count($row_matches) == 1) {
-		    $generation_data = explode(",", $row_matches[0]);
-		    $total_generation_watts = $generation_data[3];
-		    $total_generation = $total_generation_watts /1000;
-
-				return $total_generation ;
-
-		  }
-		} else {
-
-		}
 	}
 
 
